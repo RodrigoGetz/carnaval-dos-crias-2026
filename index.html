@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Contagem para o Carnaval 2026</title>
+  <style>
+    :root { color-scheme: light dark; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      display: grid;
+      place-items: center;
+      min-height: 100vh;
+      padding: 24px;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(255, 200, 0, .18), transparent 60%),
+                  radial-gradient(900px 500px at 90% 30%, rgba(0, 180, 255, .18), transparent 55%),
+                  radial-gradient(800px 500px at 60% 90%, rgba(255, 0, 160, .14), transparent 55%);
+    }
+    .card {
+      width: min(780px, 100%);
+      border-radius: 18px;
+      padding: 28px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.12);
+      background: rgba(255,255,255,.7);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(0,0,0,.08);
+    }
+    @media (prefers-color-scheme: dark) {
+      .card { background: rgba(20,20,20,.55); border-color: rgba(255,255,255,.12); }
+    }
+    h1 { margin: 0 0 10px; font-size: clamp(22px, 3vw, 34px); }
+    .sub { opacity: .8; margin: 0 0 18px; line-height: 1.4; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 18px;
+    }
+    .box {
+      border-radius: 14px;
+      padding: 16px;
+      border: 1px solid rgba(0,0,0,.08);
+      background: rgba(255,255,255,.55);
+    }
+    @media (prefers-color-scheme: dark) {
+      .box { background: rgba(0,0,0,.22); border-color: rgba(255,255,255,.12); }
+    }
+    .label { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; opacity: .75; }
+    .value { font-size: clamp(28px, 5vw, 54px); font-weight: 800; margin-top: 6px; }
+    .small {
+      margin-top: 14px;
+      opacity: .8;
+      font-size: 14px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; }
+    .badge {
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(0,0,0,.10);
+      background: rgba(255,255,255,.45);
+    }
+    @media (prefers-color-scheme: dark) {
+      .badge { border-color: rgba(255,255,255,.14); background: rgba(0,0,0,.20); }
+    }
+    .done { font-weight: 800; }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1>⏳ Contagem para o Carnaval 2026</h1>
+    <p class="sub">
+      Data-alvo: <strong>13/02/2026</strong> (fuso <code>America/Sao_Paulo</code>) — atualiza automaticamente.
+    </p>
+
+    <section class="grid" aria-label="Contadores">
+      <div class="box">
+        <div class="label">Semanas</div>
+        <div class="value" id="weeks">—</div>
+      </div>
+      <div class="box">
+        <div class="label">Dias</div>
+        <div class="value" id="days">—</div>
+      </div>
+      <div class="box">
+        <div class="label">Horas</div>
+        <div class="value" id="hours">—</div>
+      </div>
+    </section>
+
+    <div class="small">
+      <span class="badge">Agora: <span id="now">—</span></span>
+      <span class="badge">Faltam (total): <span id="total">—</span></span>
+      <span class="badge">Status: <span id="status">—</span></span>
+    </div>
+  </main>
+
+  <script>
+    // Carnaval 2026: 13/02/2026.
+    // Observação: "Carnaval" é um período; aqui usamos a data fixa fornecida por você.
+    const TARGET_DATE_STR = "2026-02-13";
+    const TZ = "America/Sao_Paulo";
+
+    const elWeeks = document.getElementById("weeks");
+    const elDays  = document.getElementById("days");
+    const elHours = document.getElementById("hours");
+    const elNow   = document.getElementById("now");
+    const elTotal = document.getElementById("total");
+    const elStatus= document.getElementById("status");
+
+    // Converte uma data/hora "local" em São Paulo para um timestamp UTC com precisão de minutos/segundos.
+    // Fazemos isso usando Intl.DateTimeFormat para obter os componentes no fuso desejado.
+    function tzDateParts(date, timeZone) {
+      const fmt = new Intl.DateTimeFormat("en-US", {
+        timeZone,
+        year: "numeric", month: "2-digit", day: "2-digit",
+        hour: "2-digit", minute: "2-digit", second: "2-digit",
+        hour12: false
+      });
+      const parts = Object.fromEntries(fmt.formatToParts(date).map(p => [p.type, p.value]));
+      return {
+        year: Number(parts.year),
+        month: Number(parts.month),
+        day: Number(parts.day),
+        hour: Number(parts.hour),
+        minute: Number(parts.minute),
+        second: Number(parts.second),
+      };
+    }
+
+    // Timestamp UTC correspondente à meia-noite (00:00:00) do dia alvo no fuso America/Sao_Paulo
+    function targetTimestampUTC() {
+      const [y, m, d] = TARGET_DATE_STR.split("-").map(Number);
+
+      // Criamos uma data "candidata" em UTC e depois ajustamos para representar 00:00 no fuso.
+      // A ideia: descobrir qual instante UTC corresponde a 00:00 em São Paulo.
+      // 1) Pegamos um chute: 00:00 UTC do dia.
+      const guess = new Date(Date.UTC(y, m - 1, d, 0, 0, 0));
+
+      // 2) Vemos que horas/dia esse "guess" representa em São Paulo.
+      const p = tzDateParts(guess, TZ);
+
+      // 3) Calculamos diferença entre o que queremos (y/m/d 00:00:00) e o que veio no fuso.
+      // Ajuste em segundos: (p - desejado) em relação ao guess.
+      const desired = { year: y, month: m, day: d, hour: 0, minute: 0, second: 0 };
+
+      // Convertemos ambos para "segundos do dia" e também consideramos possíveis diferenças de data.
+      // Para simplicidade robusta, fazemos um loop de correção pequeno.
+      let t = guess.getTime();
+
+      for (let i = 0; i < 5; i++) {
+        const cur = tzDateParts(new Date(t), TZ);
+
+        // diferença de data (em dias) aproximada
+        const curDate = Date.UTC(cur.year, cur.month - 1, cur.day);
+        const desDate = Date.UTC(desired.year, desired.month - 1, desired.day);
+        const dayDiff = Math.round((curDate - desDate) / 86400000);
+
+        const curSec = cur.hour * 3600 + cur.minute * 60 + cur.second;
+        const desSec = 0;
+
+        const diffSec = (dayDiff * 86400) + (curSec - desSec);
+        t -= diffSec * 1000;
+
+        if (diffSec === 0) break;
+      }
+      return t;
+    }
+
+    const TARGET_TS = targetTimestampUTC();
+
+    function formatNowSP() {
+      return new Intl.DateTimeFormat("pt-BR", {
+        timeZone: TZ,
+        dateStyle: "full",
+        timeStyle: "medium"
+      }).format(new Date());
+    }
+
+    function tick() {
+      const now = Date.now();
+      let diffMs = TARGET_TS - now;
+
+      elNow.textContent = formatNowSP();
+
+      if (diffMs <= 0) {
+        elWeeks.textContent = "0";
+        elDays.textContent  = "0";
+        elHours.textContent = "0";
+        elTotal.textContent = "0s";
+        elStatus.innerHTML  = "<span class='done'>Chegou! 🎉</span>";
+        return;
+      }
+
+      const totalSeconds = Math.floor(diffMs / 1000);
+      const totalHours   = Math.floor(totalSeconds / 3600);
+      const totalDays    = Math.floor(totalSeconds / 86400);
+      const totalWeeks   = Math.floor(totalDays / 7);
+
+      elWeeks.textContent = String(totalWeeks);
+      elDays.textContent  = String(totalDays);
+      elHours.textContent = String(totalHours);
+
+      // Texto extra “human-friendly”
+      const remDays = totalDays % 7;
+      const remHours = totalHours % 24;
+      elTotal.textContent = `${totalWeeks} sem, ${remDays} d, ${remHours} h (aprox.)`;
+      elStatus.textContent = "Contando…";
+    }
+
+    tick();
+    setInterval(tick, 1000);
+  </script>
+</body>
+</html>
