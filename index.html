@@ -43,7 +43,7 @@
 
     .wrap{ min-height:100vh; display:grid; place-items:center; padding:22px 14px 56px; }
     .card{
-      width:min(1060px, 100%);
+      width:min(1100px, 100%);
       border-radius: var(--r);
       background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
       border: 1px solid var(--stroke);
@@ -54,7 +54,7 @@
     }
     header{ display:flex; justify-content:space-between; gap:14px; flex-wrap:wrap; align-items:flex-start; }
     h1{ margin:0; font-size: clamp(26px, 3.6vw, 44px); letter-spacing:-.02em; }
-    .subtitle{ color:var(--muted); margin-top:6px; font-size:14px; line-height:1.35; max-width:70ch; }
+    .subtitle{ color:var(--muted); margin-top:6px; font-size:14px; line-height:1.35; max-width:75ch; }
     .pill{
       display:inline-flex; align-items:center; gap:8px;
       padding:10px 12px; border-radius:999px;
@@ -62,12 +62,13 @@
       background: rgba(0,0,0,.18);
       backdrop-filter: blur(10px);
       font-size:13px; color:var(--muted);
+      white-space:nowrap;
     }
 
     .grid{
       margin-top:18px;
       display:grid;
-      grid-template-columns: 1.2fr .8fr;
+      grid-template-columns: 1.15fr .85fr;
       gap: 14px;
     }
     @media (max-width: 920px){ .grid{ grid-template-columns:1fr; } }
@@ -89,7 +90,7 @@
     }
     .kpi .n{
       font-size: clamp(22px, 3vw, 34px);
-      font-weight: 800;
+      font-weight: 900;
       letter-spacing:-.02em;
     }
     .kpi .l{ color:var(--muted); font-size:12px; }
@@ -154,6 +155,10 @@
       font-size: 12px;
       transition: transform .15s ease, background .15s ease;
       user-select:none;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
     }
     .btn:hover{ transform: translateY(-1px); background: rgba(255,255,255,.10); }
     .btn:active{ transform: translateY(0px); }
@@ -176,6 +181,21 @@
       font-size: 12px;
     }
     .miniBtns{ display:flex; gap:8px; flex-wrap:wrap; }
+
+    /* little rio flair */
+    .ribbon{
+      position:absolute; right:-60px; top:16px;
+      transform: rotate(18deg);
+      background: linear-gradient(90deg, rgba(255,204,0,.9), rgba(255,46,166,.85), rgba(46,242,255,.85));
+      padding:10px 74px;
+      border-radius: 999px;
+      font-weight:800;
+      letter-spacing:.04em;
+      font-size:12px;
+      color:#0b0a12;
+      box-shadow: 0 10px 30px rgba(0,0,0,.35);
+      opacity:.95;
+    }
   </style>
 </head>
 
@@ -184,13 +204,15 @@
 
   <div class="wrap">
     <main class="card">
+      <div class="ribbon">RIO • BLOCO + FESTA</div>
+
       <header>
         <div>
           <h1>🐦🎭 Carnario 2026 — Rio</h1>
           <div class="subtitle">
-            Contagem regressiva para <b>13/02/2026</b> (horário do RJ) + agenda de blocos.
+            Contagem regressiva para <b>13/02/2026</b> (RJ) + agenda essencial: blocos confirmados e as <b>4 festas principais</b>.
             <br/>
-            <span style="opacity:.9">Regra do site:</span> <b>não inventa</b> — o que estiver “Confirmado (2026)” vem com <b>fonte</b>.
+            <b>Sem inventar:</b> cada item tem links de referência em “Fonte / Ingresso”.
           </div>
         </div>
         <div class="pill" id="nowPill">⏱️ Atualizando…</div>
@@ -200,7 +222,7 @@
         <section class="panel">
           <div class="sectionTitle">
             <h2>⏳ Falta para 13/02/2026</h2>
-            <span class="tag" id="tzTag">TZ: America/Sao_Paulo</span>
+            <span class="tag">TZ: -03:00 (RJ/SP)</span>
           </div>
 
           <div class="kpis">
@@ -211,7 +233,7 @@
           </div>
 
           <div class="barWrap">
-            <div class="bar" aria-label="Progresso até o dia 13/02/2026">
+            <div class="bar" aria-label="Progresso até 13/02/2026">
               <div id="barFill"></div>
             </div>
             <div class="barMeta">
@@ -221,7 +243,7 @@
           </div>
 
           <div class="note">
-            *“Semanas/dias/horas” são calculados continuamente. O relógio usa seu dispositivo, mas o alvo é fixo em <b>13/02/2026 00:00 (-03:00)</b>.
+            Dica: abre no celular e clica “📅 Add Calendar” nos eventos para montar seu roteiro.
           </div>
 
           <footer>
@@ -236,121 +258,152 @@
 
         <aside class="panel">
           <div class="sectionTitle">
-            <h2>✅ Confirmados (2026)</h2>
+            <h2>✅ Blocos confirmados (2026)</h2>
             <span class="tag">com fonte</span>
           </div>
-
-          <div class="list" id="confirmedList"></div>
+          <div class="list" id="confirmedBlocks"></div>
 
           <div class="note">
-            Fontes: agenda 2026 do <b>Diário do Rio</b>.
-            Se você me mandar o link oficial/página do bloco para os outros, eu adiciono como “confirmado” também.
+            Fonte principal dos blocos (agenda 2026): Diário do Rio.
           </div>
         </aside>
       </div>
 
       <section class="panel" style="margin-top:14px;">
         <div class="sectionTitle">
-          <h2>📝 Seu roteiro (rascunho)</h2>
-          <span class="tag">não confirmado</span>
+          <h2>🎟️ Festas principais (2026)</h2>
+          <span class="tag">com links</span>
         </div>
 
-        <div class="list" id="draftList"></div>
+        <div class="list" id="mainParties"></div>
 
         <div class="note">
-          Este bloco é o que você escreveu (sem data). Para virar “Confirmado (2026)”, preciso de:
-          (i) <b>data</b> e (ii) <b>fonte</b> (link oficial/agenda confiável).
+          Observação: quando duas fontes divergem em <b>horário</b>, eu mostro isso no card (sem chutar).
         </div>
       </section>
 
       <section class="panel" style="margin-top:14px;">
         <div class="sectionTitle">
-          <h2>🎟️ Festas (somente nomes — sem inventar detalhes)</h2>
-          <span class="tag">aguardando info</span>
+          <h2>📚 Fontes</h2>
+          <span class="tag">transparência</span>
         </div>
-        <div class="note">
-          Baile do Momo • SubaJovem • Boma — se você mandar os links/datas/locais oficiais, eu coloco aqui com botão de Maps e .ICS.
-        </div>
+        <div class="note" id="sourcesBox"></div>
       </section>
+
     </main>
   </div>
 
   <canvas id="fx" style="position:fixed;inset:0;pointer-events:none;z-index:10;"></canvas>
 
   <script>
-    // =============================
+    // =========================================================
     // CONFIG
-    // =============================
-    // Carnaval alvo (Carnario) — 13/02/2026 00:00 no fuso -03:00 (America/Sao_Paulo)
+    // =========================================================
     const TARGET = new Date("2026-02-13T00:00:00-03:00");
-    const START  = new Date("2025-01-01T00:00:00-03:00"); // base p/ barra de progresso (visual)
+    const START  = new Date("2025-01-01T00:00:00-03:00");
 
-    // Confirmados 2026 (com fonte)
-    // Fonte: Diário do Rio - Agenda dos Blocos 2026
-    const CONFIRMED = [
+    // Blocos confirmados (agenda 2026) — Diário do Rio.
+    // (mantive os 3 que já estavam confirmados no seu site)
+    const CONFIRMED_BLOCKS = [
       {
+        kind:"Bloco",
         title: "Areia",
-        when: "15/02/2026 (Domingo) — 7h",
+        dt: "2026-02-15T07:00:00-03:00",
+        whenLabel: "15/02/2026 (Dom) — 07:00",
         where: "Posto 12, Leblon",
-        sourceText: "Diário do Rio (agenda 2026)",
-        sourceUrl: "https://diariodorio.com/agenda-dos-blocos-de-rua-do-rio-de-janeiro-em-2026/",
-        mapsQuery: "Posto 12 Leblon Rio de Janeiro"
+        mapsQuery: "Posto 12 Leblon Rio de Janeiro",
+        ticketUrl: "https://diariodorio.com/agenda-dos-blocos-de-rua-do-rio-de-janeiro-em-2026/",
+        sourceUrl: "https://diariodorio.com/agenda-dos-blocos-de-rua-do-rio-de-janeiro-em-2026/"
       },
       {
+        kind:"Bloco",
         title: "Sargento Pimenta",
-        when: "16/02/2026 (Segunda) — 8h",
+        dt: "2026-02-16T08:00:00-03:00",
+        whenLabel: "16/02/2026 (Seg) — 08:00",
         where: "Av. Infante Dom Henrique, 75 (Flamengo)",
-        sourceText: "Diário do Rio (agenda 2026)",
-        sourceUrl: "https://diariodorio.com/agenda-dos-blocos-de-rua-do-rio-de-janeiro-em-2026/",
-        mapsQuery: "Avenida Infante Dom Henrique 75 Flamengo Rio de Janeiro"
+        mapsQuery: "Avenida Infante Dom Henrique 75 Flamengo Rio de Janeiro",
+        ticketUrl: "https://diariodorio.com/agenda-dos-blocos-de-rua-do-rio-de-janeiro-em-2026/",
+        sourceUrl: "https://diariodorio.com/agenda-dos-blocos-de-rua-do-rio-de-janeiro-em-2026/"
       },
       {
+        kind:"Bloco",
         title: "Império da Cruzada",
-        when: "16/02/2026 (Segunda) — 14h",
+        dt: "2026-02-16T14:00:00-03:00",
+        whenLabel: "16/02/2026 (Seg) — 14:00",
         where: "Av. Delfim Moreira, 12 (Leblon)",
-        sourceText: "Diário do Rio (agenda 2026)",
-        sourceUrl: "https://diariodorio.com/agenda-dos-blocos-de-rua-do-rio-de-janeiro-em-2026/",
-        mapsQuery: "Avenida Delfim Moreira 12 Leblon Rio de Janeiro"
+        mapsQuery: "Avenida Delfim Moreira 12 Leblon Rio de Janeiro",
+        ticketUrl: "https://diariodorio.com/agenda-dos-blocos-de-rua-do-rio-de-janeiro-em-2026/",
+        sourceUrl: "https://diariodorio.com/agenda-dos-blocos-de-rua-do-rio-de-janeiro-em-2026/"
       }
     ];
 
-    // Seu roteiro (sem data -> não confirmado)
-    const DRAFT = [
+    // FESTAS PRINCIPAIS (como você pediu)
+    // - Baile do Momo (Domingo)
+    // - SubaJovem (Segunda)
+    // - Monobloco (Sexta) -> aqui usei "Ensaios do Monobloco" (evento publicado) em 13/02/2026 (sexta)
+    // - Black Coffee BOMA (Sábado) -> 14/02/2026 no Museu do Amanhã, com divergência 21h vs 22h em páginas diferentes
+    const MAIN_PARTIES = [
       {
-        title: "Escangalha",
-        when: "Sábado — 08:00–12:00",
-        where: "Jardim Botânico (esquina com Pacheco Leão)",
-        note: "Sem data/fonte no texto — manter como rascunho."
+        kind:"Festa",
+        title: "Monobloco — Ensaios 2026 (sexta)",
+        dt: "2026-02-13T21:00:00-03:00",
+        whenLabel: "13/02/2026 (Sex) — horário a confirmar no ingresso",
+        where: "Fundição Progresso — R. dos Arcos, 24, Centro",
+        mapsQuery: "Fundição Progresso Rua dos Arcos 24 Rio de Janeiro",
+        ticketUrl: "https://ingresse.com/ensaios-do-monobloco-2026-fundicao-progresso/",
+        sourceUrl: "https://ingresse.com/ensaios-do-monobloco-2026-fundicao-progresso/",
+        note: "Este é um evento de ensaio (publicado). Não achei uma página aberta confirmando “desfile de rua” do Monobloco em 2026."
       },
       {
-        title: "Bloco Areia",
-        when: "Domingo — 07:00",
-        where: "Leblon",
-        note: "Já existe entrada confirmada (Areia) para 15/02/2026 7h — acima."
+        kind:"Festa",
+        title: "BOMA — Black Coffee (sábado)",
+        dt: "2026-02-14T21:00:00-03:00",
+        whenLabel: "14/02/2026 (Sáb) — 21:00 (ou 22:00, ver fontes)",
+        where: "Museu do Amanhã — Praça Mauá, 1, Centro",
+        mapsQuery: "Museu do Amanhã Praça Mauá 1 Rio de Janeiro",
+        ticketUrl: "https://ingresse.com/black-coffee-carnival/",
+        sourceUrl: "https://www.exiteventos.com.br/event-details/boma-presents-black-coffee-ahmed-spins",
+        extraSources: [
+          {label:"Fonte (21:00)", url:"https://www.exiteventos.com.br/event-details/boma-presents-black-coffee-ahmed-spins"},
+          {label:"Fonte (22:00)", url:"https://betimelapse.com.br/eventos/boma-black-coffee-rj/"}
+        ],
+        note: "Há divergência pública de horário (21h vs 22h). Confirme no ingresso antes de fechar seu roteiro."
       },
       {
-        title: "Sargento Pimenta",
-        when: "Segunda — 08:00",
-        where: "Glória",
-        note: "Agenda 2026 listou endereço no Flamengo; confira ponto exato no dia."
+        kind:"Festa",
+        title: "Baile do Momo (domingo)",
+        dt: "2026-02-15T23:00:00-03:00",
+        whenLabel: "15/02/2026 (Dom) — 23:00 (local pode variar)",
+        where: "Rio de Janeiro — local a confirmar (depende da organização)",
+        mapsQuery: "Rio de Janeiro",
+        ticketUrl: "https://www.ingresse.com/bailedomomo-rj-carnaval/",
+        sourceUrl: "https://betimelapse.com.br/eventos/baile-do-momo-carnaval-rj/",
+        extraSources: [
+          {label:"Fonte (data)", url:"https://betimelapse.com.br/eventos/baile-do-momo-carnaval-rj/"},
+          {label:"Fonte (23:00)", url:"https://ondehoje.com.br/evento/baile-do-momo-15.02.2026"}
+        ],
+        note: "A data (domingo) está publicada; já vi listagem com 23:00, mas o local aparece como “a definir” em algumas páginas — confirme no ingresso."
       },
       {
-        title: "Império da Cruzada",
-        when: "Segunda — 14:00",
-        where: "Leblon",
-        note: "Confirmado 16/02/2026 14h — acima."
-      },
-      {
-        title: "Jardim Botânico",
-        when: "Terça — 08:00 e 14:00",
-        where: "Jardim Botânico",
-        note: "Sem bloco/nome + sem fonte/datas — rascunho."
+        kind:"Festa",
+        title: "SubaJovem — Baile da Purpurina (segunda)",
+        dt: "2026-02-16T18:00:00-03:00",
+        whenLabel: "16/02/2026 (Seg) — 18:00 (pode ter fim 06:00)",
+        where: "Rio de Janeiro — local a confirmar",
+        mapsQuery: "Rio de Janeiro",
+        ticketUrl: "https://www.ingresse.com/subajovem-baile-da-purpurina-open-bar-2026/",
+        sourceUrl: "https://www.ingresse.com/subajovem-baile-da-purpurina-open-bar-2026/",
+        extraSources: [
+          {label:"Fonte (Seg 16/02/2026)", url:"https://www.ingresse.com/subajovem-baile-da-purpurina-open-bar-2026/"},
+          {label:"Fonte (18:00–06:00 / local a definir)", url:"https://raentretenimento.com/eventos/ingressos-desconto-suba-jovem-carnaval-rj-2026/"}
+        ],
+        note: "A data (segunda) está na página do evento; vi página listando 18:00–06:00 e local 'a definir'. Confirme no ingresso."
       }
     ];
 
-    // =============================
+    // =========================================================
     // UI HELPERS
-    // =============================
+    // =========================================================
     const $ = (id) => document.getElementById(id);
 
     function fmtNow() {
@@ -379,72 +432,150 @@
       window.__st = setTimeout(()=> $("statusLine").textContent = "Pronto.", 2500);
     }
 
-    // =============================
-    // RENDER LISTS
-    // =============================
-    function renderConfirmed(){
-      const root = $("confirmedList");
-      root.innerHTML = "";
-
-      CONFIRMED.forEach((ev) => {
-        const div = document.createElement("div");
-        div.className = "item";
-        div.innerHTML = `
-          <div>
-            <h3>🎺 ${escapeHtml(ev.title)}</h3>
-            <div class="meta"><b>Quando:</b> ${escapeHtml(ev.when)}<br/>
-              <b>Onde:</b> ${escapeHtml(ev.where)}<br/>
-              <b>Fonte:</b> <a href="${ev.sourceUrl}" target="_blank" rel="noopener noreferrer">${escapeHtml(ev.sourceText)}</a>
-            </div>
-          </div>
-          <div class="actions">
-            <button class="btn">🗺️ Maps</button>
-            <button class="btn">📋 Copiar</button>
-          </div>
-        `;
-        const [mapsBtn, copyBtn] = div.querySelectorAll("button");
-        mapsBtn.onclick = () => openMaps(ev.mapsQuery || (ev.where + " Rio de Janeiro"));
-        copyBtn.onclick = () => copyText(`${ev.title} — ${ev.when} — ${ev.where} — Fonte: ${ev.sourceUrl}`);
-        root.appendChild(div);
-      });
-    }
-
-    function renderDraft(){
-      const root = $("draftList");
-      root.innerHTML = "";
-
-      DRAFT.forEach((ev) => {
-        const div = document.createElement("div");
-        div.className = "item";
-        div.innerHTML = `
-          <div>
-            <h3>🧃 ${escapeHtml(ev.title)}</h3>
-            <div class="meta"><b>Quando:</b> ${escapeHtml(ev.when)}<br/>
-              <b>Onde:</b> ${escapeHtml(ev.where)}<br/>
-              <span style="opacity:.9"><b>Obs:</b> ${escapeHtml(ev.note || "Rascunho.")}</span>
-            </div>
-          </div>
-          <div class="actions">
-            <button class="btn">🗺️ Maps</button>
-            <button class="btn">📋 Copiar</button>
-          </div>
-        `;
-        const [mapsBtn, copyBtn] = div.querySelectorAll("button");
-        mapsBtn.onclick = () => openMaps(ev.where + " Rio de Janeiro");
-        copyBtn.onclick = () => copyText(`[RASCUNHO] ${ev.title} — ${ev.when} — ${ev.where}`);
-        root.appendChild(div);
-      });
-    }
-
     function escapeHtml(s){
       return String(s).replace(/[&<>"']/g, c => ({
         "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
       }[c]));
     }
 
-    // =============================
+    // =========================================================
+    // ICS GENERATOR
+    // =========================================================
+    function pad2(n){ return String(n).padStart(2,"0"); }
+    function toICSDate(dt){
+      // Use local time as "floating" to avoid timezone bugs on some calendars
+      const d = new Date(dt);
+      const y = d.getFullYear();
+      const m = pad2(d.getMonth()+1);
+      const da = pad2(d.getDate());
+      const h = pad2(d.getHours());
+      const mi = pad2(d.getMinutes());
+      const s = pad2(d.getSeconds());
+      return `${y}${m}${da}T${h}${mi}${s}`;
+    }
+    function downloadICS({title, start, location, url}){
+      if(!start){
+        setStatus("❌ Sem data/horário suficientes para .ics.");
+        return;
+      }
+      const dtStart = toICSDate(start);
+      const end = new Date(start.getTime() + 2*60*60*1000); // duração padrão 2h (sem inventar: é só default técnico)
+      const dtEnd = toICSDate(end);
+
+      const ics =
+`BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Carnario 2026//RJ Planner//PT-BR
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:${Math.random().toString(16).slice(2)}@carnario
+DTSTAMP:${toICSDate(new Date())}
+DTSTART:${dtStart}
+DTEND:${dtEnd}
+SUMMARY:${title}
+LOCATION:${location || "Rio de Janeiro"}
+URL:${url || ""}
+END:VEVENT
+END:VCALENDAR`;
+
+      const blob = new Blob([ics], {type:"text/calendar;charset=utf-8"});
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = (title || "evento").replace(/[^\w\s-]/g,"").replace(/\s+/g,"-").toLowerCase() + ".ics";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setStatus("📅 .ics baixado!");
+    }
+
+    // =========================================================
+    // RENDER
+    // =========================================================
+    function renderList(rootId, items){
+      const root = $(rootId);
+      root.innerHTML = "";
+
+      items
+        .slice()
+        .sort((a,b)=> (new Date(a.dt||"2100-01-01") - new Date(b.dt||"2100-01-01")))
+        .forEach((ev) => {
+          const div = document.createElement("div");
+          div.className = "item";
+
+          const sourcesHtml = (() => {
+            const parts = [];
+            if (ev.sourceUrl) parts.push(`<a href="${ev.sourceUrl}" target="_blank" rel="noopener noreferrer">Fonte</a>`);
+            if (ev.extraSources?.length){
+              ev.extraSources.forEach(s => parts.push(`<a href="${s.url}" target="_blank" rel="noopener noreferrer">${escapeHtml(s.label)}</a>`));
+            }
+            return parts.length ? parts.join(" · ") : "";
+          })();
+
+          div.innerHTML = `
+            <div>
+              <h3>${ev.kind === "Festa" ? "🎉" : "🎺"} ${escapeHtml(ev.title)}</h3>
+              <div class="meta">
+                <b>Quando:</b> ${escapeHtml(ev.whenLabel || "A confirmar")}<br/>
+                <b>Onde:</b> ${escapeHtml(ev.where || "A confirmar")}<br/>
+                ${sourcesHtml ? `<b>Links:</b> ${sourcesHtml}<br/>` : ""}
+                ${ev.note ? `<span style="opacity:.92"><b>Obs:</b> ${escapeHtml(ev.note)}</span>` : ""}
+              </div>
+            </div>
+            <div class="actions">
+              <button class="btn">🗺️ Maps</button>
+              <a class="btn" href="${ev.ticketUrl || ev.sourceUrl || "#"}" target="_blank" rel="noopener noreferrer">🎟️ Ingresso</a>
+              <button class="btn">📅 Add Calendar</button>
+              <button class="btn">📋 Copiar</button>
+            </div>
+          `;
+
+          const [mapsBtn, , icsBtn, copyBtn] = div.querySelectorAll(".actions .btn");
+
+          mapsBtn.onclick = () => openMaps(ev.mapsQuery || (ev.where + " Rio de Janeiro"));
+
+          icsBtn.onclick = () => {
+            const start = ev.dt ? new Date(ev.dt) : null;
+            if (!start || isNaN(start.getTime())) {
+              setStatus("❌ Sem data/horário suficientes para .ics.");
+              return;
+            }
+            downloadICS({
+              title: `${ev.kind}: ${ev.title}`,
+              start,
+              location: ev.where,
+              url: ev.ticketUrl || ev.sourceUrl
+            });
+          };
+
+          copyBtn.onclick = () => copyText(
+            `${ev.kind}: ${ev.title}\nQuando: ${ev.whenLabel}\nOnde: ${ev.where}\nIngresso/Fonte: ${ev.ticketUrl || ev.sourceUrl || ""}`
+          );
+
+          root.appendChild(div);
+        });
+    }
+
+    function renderSources(){
+      const sources = [
+        {label:"SubaJovem (Ingresse)", url:"https://www.ingresse.com/subajovem-baile-da-purpurina-open-bar-2026/"},
+        {label:"SubaJovem (horário/local a definir — RA)", url:"https://raentretenimento.com/eventos/ingressos-desconto-suba-jovem-carnaval-rj-2026/"},
+        {label:"BOMA Black Coffee (Exit Eventos — 21:00)", url:"https://www.exiteventos.com.br/event-details/boma-presents-black-coffee-ahmed-spins"},
+        {label:"BOMA Black Coffee (Timelapse — 22:00 / Museu do Amanhã)", url:"https://betimelapse.com.br/eventos/boma-black-coffee-rj/"},
+        {label:"Baile do Momo (Timelapse — domingo 15/02)", url:"https://betimelapse.com.br/eventos/baile-do-momo-carnaval-rj/"},
+        {label:"Baile do Momo (OndeHoje — 23:00)", url:"https://ondehoje.com.br/evento/baile-do-momo-15.02.2026"},
+        {label:"Monobloco (Ensaios 2026 — Ingresse)", url:"https://ingresse.com/ensaios-do-monobloco-2026-fundicao-progresso/"},
+        {label:"Fundição Progresso (endereço)", url:"https://www.fundicaoprogresso.com.br/programacao/Show/118"},
+        {label:"Blocos RJ 2026 (Diário do Rio)", url:"https://diariodorio.com/agenda-dos-blocos-de-rua-do-rio-de-janeiro-em-2026/"}
+      ];
+
+      $("sourcesBox").innerHTML = sources.map(s =>
+        `• <a href="${s.url}" target="_blank" rel="noopener noreferrer">${escapeHtml(s.label)}</a>`
+      ).join("<br/>");
+    }
+
+    // =========================================================
     // COUNTDOWN
-    // =============================
+    // =========================================================
     function tick(){
       const now = new Date();
       $("nowPill").textContent = "⏱️ Agora: " + fmtNow();
@@ -466,7 +597,7 @@
       $("hours").textContent = hours;
       $("mins").textContent  = mins;
 
-      // progress bar (visual): START -> TARGET
+      // progress bar
       const span = TARGET - START;
       const done = now - START;
       const pct  = Math.max(0, Math.min(1, done / span));
@@ -477,10 +608,10 @@
       $("progressLeft").textContent = (daysLeftTotal > 0 ? `${daysLeftTotal} dias restantes` : "É HOJE!");
     }
 
-    // =============================
-    // CONFETTI FX (simple)
-    // =============================
-    const canvas = $("fx");
+    // =========================================================
+    // CONFETTI FX
+    // =========================================================
+    const canvas = document.getElementById("fx");
     const ctx = canvas.getContext("2d");
     let particles = [];
     function resize(){
@@ -494,17 +625,17 @@
     resize();
 
     function popConfetti(){
-      const n = 160;
+      const n = 170;
       for (let i=0;i<n;i++){
         particles.push({
           x: Math.random()*innerWidth,
           y: -10,
-          vx: (Math.random()-0.5)*2.2,
-          vy: 2 + Math.random()*3.2,
-          r: 2 + Math.random()*4,
+          vx: (Math.random()-0.5)*2.4,
+          vy: 2.2 + Math.random()*3.3,
+          r: 2 + Math.random()*4.2,
           rot: Math.random()*Math.PI*2,
-          vr: (Math.random()-0.5)*0.2,
-          life: 180 + Math.random()*120
+          vr: (Math.random()-0.5)*0.25,
+          life: 190 + Math.random()*140
         });
       }
       setStatus("🎊 Confete!");
@@ -517,27 +648,27 @@
         p.x += p.vx;
         p.y += p.vy;
         p.rot += p.vr;
-        p.vy += 0.01; // gravity
+        p.vy += 0.012;
         ctx.save();
         ctx.translate(p.x,p.y);
         ctx.rotate(p.rot);
-        ctx.fillStyle = `hsla(${(p.life*3)%360}, 95%, 60%, .9)`;
-        ctx.fillRect(-p.r, -p.r, p.r*2.2, p.r*1.2);
+        ctx.fillStyle = `hsla(${(p.life*3.2)%360}, 95%, 60%, .9)`;
+        ctx.fillRect(-p.r, -p.r, p.r*2.4, p.r*1.3);
         ctx.restore();
       }
       requestAnimationFrame(animate);
     }
     animate();
 
-    // =============================
+    // =========================================================
     // SHARE / COPY
-    // =============================
-    $("copyBtn").onclick = () => copyText(location.href);
+    // =========================================================
+    document.getElementById("copyBtn").onclick = () => copyText(location.href);
 
-    $("shareBtn").onclick = async () => {
+    document.getElementById("shareBtn").onclick = async () => {
       if (navigator.share){
         try{
-          await navigator.share({ title: document.title, text: "Carnario 2026 — contagem e agenda RJ", url: location.href });
+          await navigator.share({ title: document.title, text: "Carnario 2026 — RJ (blocos + festas)", url: location.href });
           setStatus("📤 Compartilhado!");
         }catch{
           setStatus("❌ Share cancelado.");
@@ -548,13 +679,15 @@
       }
     };
 
-    $("confettiBtn").onclick = popConfetti;
+    document.getElementById("confettiBtn").onclick = popConfetti;
 
     // init
-    renderConfirmed();
-    renderDraft();
+    renderList("confirmedBlocks", CONFIRMED_BLOCKS);
+    renderList("mainParties", MAIN_PARTIES);
+    renderSources();
     tick();
     setInterval(tick, 1000);
   </script>
 </body>
 </html>
+
