@@ -3,152 +3,364 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="theme-color" content="#0b0a12" />
-  <title>🐦🎭 Carnario 2026 — Rio (Blocos & Festas)</title>
+  <meta name="theme-color" content="#070513" />
+  <title>🐦🎭 Carnario 2026 — Rio</title>
 
   <style>
     :root{
-      --bg0:#060511; --bg1:#0b0a12;
-      --card: rgba(255,255,255,.08);
-      --stroke: rgba(255,255,255,.14);
-      --text: rgba(255,255,255,.92);
-      --muted: rgba(255,255,255,.70);
+      --bg0:#040312;
+      --bg1:#0a0820;
+
+      --stroke: rgba(255,255,255,.16);
+      --stroke2: rgba(255,255,255,.11);
+
+      --text: rgba(255,255,255,.94);
+      --muted: rgba(255,255,255,.74);
+
       --a:#ffcc00; --b:#ff2ea6; --c:#2ef2ff; --d:#8b5cff; --e:#35ff7a;
-      --shadow: 0 18px 60px rgba(0,0,0,.55);
-      --r: 22px;
+      --shadow: 0 26px 120px rgba(0,0,0,.66);
+      --r: 24px;
+
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     }
+
     *{ box-sizing:border-box; }
     html,body{ height:100%; }
     body{
       margin:0;
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
       color: var(--text);
-      background:
-        radial-gradient(1200px 700px at 15% 20%, rgba(255,204,0,.18), transparent 60%),
-        radial-gradient(1000px 650px at 85% 30%, rgba(46,242,255,.16), transparent 60%),
-        radial-gradient(900px 650px at 45% 90%, rgba(255,46,166,.12), transparent 60%),
-        linear-gradient(180deg, var(--bg0), var(--bg1));
       overflow-x:hidden;
+
+      background:
+        radial-gradient(1200px 760px at 10% 14%, rgba(255,204,0,.14), transparent 62%),
+        radial-gradient(1100px 720px at 92% 18%, rgba(46,242,255,.12), transparent 64%),
+        radial-gradient(900px 700px at 52% 92%, rgba(255,46,166,.10), transparent 60%),
+        radial-gradient(900px 640px at 75% 72%, rgba(139,92,255,.10), transparent 62%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
     }
+
     .aurora{
-      position:fixed; inset:-30%;
-      filter: blur(55px);
-      opacity:.85; z-index:-2;
+      position:fixed; inset:-40%;
+      filter: blur(60px);
+      opacity:.82; z-index:-4;
       background: conic-gradient(from 180deg at 50% 50%,
-        rgba(255,204,0,.25), rgba(255,46,166,.20), rgba(46,242,255,.18),
-        rgba(139,92,255,.18), rgba(53,255,122,.14), rgba(255,204,0,.25));
-      animation: spin 14s linear infinite;
+        rgba(255,204,0,.22),
+        rgba(255,46,166,.20),
+        rgba(46,242,255,.18),
+        rgba(139,92,255,.18),
+        rgba(53,255,122,.14),
+        rgba(255,204,0,.22));
+      animation: spin 12s linear infinite;
     }
     @keyframes spin { to{ transform: rotate(360deg); } }
 
-    .wrap{ min-height:100vh; display:grid; place-items:center; padding:22px 14px 56px; }
+    .disco{
+      position:fixed; inset:0;
+      pointer-events:none;
+      z-index:-3;
+      background:
+        radial-gradient(1200px 780px at 18% 28%, rgba(255,46,166,.14), transparent 60%),
+        radial-gradient(1200px 780px at 82% 30%, rgba(46,242,255,.12), transparent 62%),
+        radial-gradient(1200px 780px at 48% 90%, rgba(255,204,0,.10), transparent 60%),
+        radial-gradient(800px 600px at 65% 65%, rgba(53,255,122,.08), transparent 65%),
+        radial-gradient(900px 700px at 40% 60%, rgba(139,92,255,.09), transparent 65%);
+      mix-blend-mode: screen;
+      opacity:.62;
+      animation: discoPulse 3.2s ease-in-out infinite;
+    }
+    @keyframes discoPulse{
+      0%,100%{ opacity:.42; filter:saturate(1.12) contrast(1.05); }
+      50%{ opacity:.78; filter:saturate(1.45) contrast(1.10); }
+    }
+
+    .sparkles{
+      position:fixed; inset:0; z-index:-2; pointer-events:none;
+      background-image:
+        radial-gradient(2px 2px at 12% 18%, rgba(255,255,255,.30), transparent 60%),
+        radial-gradient(1.5px 1.5px at 22% 72%, rgba(255,255,255,.22), transparent 60%),
+        radial-gradient(1.2px 1.2px at 64% 26%, rgba(255,255,255,.20), transparent 60%),
+        radial-gradient(1.6px 1.6px at 82% 62%, rgba(255,255,255,.24), transparent 60%),
+        radial-gradient(1.2px 1.2px at 48% 48%, rgba(255,255,255,.16), transparent 60%);
+      opacity:.55;
+      mix-blend-mode: screen;
+    }
+
+    .wrap{ min-height:100vh; display:grid; place-items:center; padding:18px 14px 64px; }
+
     .card{
-      width:min(1100px, 100%);
+      width:min(1140px, 100%);
       border-radius: var(--r);
-      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
+      background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.06));
       border: 1px solid var(--stroke);
       box-shadow: var(--shadow);
-      padding: clamp(16px, 3vw, 28px);
+      padding: clamp(16px, 3vw, 30px);
       position:relative;
       overflow:hidden;
+      backdrop-filter: blur(12px);
     }
-    header{ display:flex; justify-content:space-between; gap:14px; flex-wrap:wrap; align-items:flex-start; }
-    h1{ margin:0; font-size: clamp(26px, 3.6vw, 44px); letter-spacing:-.02em; }
-    .subtitle{ color:var(--muted); margin-top:6px; font-size:14px; line-height:1.35; max-width:75ch; }
+
+    .card::before{
+      content:"";
+      position:absolute; inset:-2px;
+      border-radius: calc(var(--r) + 2px);
+      background: linear-gradient(90deg,
+        rgba(255,204,0,.78),
+        rgba(255,46,166,.76),
+        rgba(46,242,255,.74),
+        rgba(139,92,255,.74),
+        rgba(53,255,122,.68),
+        rgba(255,204,0,.78));
+      filter: blur(18px);
+      opacity:.55;
+      z-index:-1;
+      animation: neonFlow 3.8s linear infinite;
+    }
+    @keyframes neonFlow{
+      0%{ transform: translateX(-2%) rotate(0deg); }
+      100%{ transform: translateX(2%) rotate(360deg); }
+    }
+    .card::after{
+      content:"";
+      position:absolute; inset:0;
+      background: radial-gradient(900px 420px at 18% 12%, rgba(255,255,255,.10), transparent 60%);
+      opacity:.55;
+      pointer-events:none;
+    }
+
+    header{
+      display:flex;
+      justify-content:space-between;
+      gap:14px;
+      flex-wrap:wrap;
+      align-items:flex-start;
+      margin-bottom: 14px;
+    }
+    h1{
+      margin:0;
+      font-size: clamp(20px, 3.2vw, 36px);
+      letter-spacing:-.04em;
+      line-height:1.02;
+      opacity:.92;
+    }
     .pill{
       display:inline-flex; align-items:center; gap:8px;
       padding:10px 12px; border-radius:999px;
-      border:1px solid var(--stroke);
+      border:1px solid rgba(255,255,255,.16);
       background: rgba(0,0,0,.18);
       backdrop-filter: blur(10px);
-      font-size:13px; color:var(--muted);
+      font-size:13px; color:rgba(255,255,255,.82);
       white-space:nowrap;
     }
-
-    .grid{
-      margin-top:18px;
-      display:grid;
-      grid-template-columns: 1.15fr .85fr;
-      gap: 14px;
-    }
-    @media (max-width: 920px){ .grid{ grid-template-columns:1fr; } }
 
     .panel{
       border-radius: 18px;
       background: rgba(0,0,0,.16);
-      border: 1px solid var(--stroke);
+      border: 1px solid var(--stroke2);
       padding: 14px;
+      box-shadow: 0 14px 70px rgba(0,0,0,.18);
+      transition: transform .18s ease, filter .18s ease, background .18s ease;
     }
-    .kpis{ display:grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-    @media (max-width: 680px){ .kpis{ grid-template-columns: repeat(2, 1fr); } }
-    .kpi{
-      border-radius: 16px;
-      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
-      border: 1px solid var(--stroke);
-      padding: 12px;
-      text-align:center;
+    .panel:hover{
+      transform: translateY(-2px);
+      filter: saturate(1.12);
+      background: rgba(0,0,0,.18);
     }
-    .kpi .n{
-      font-size: clamp(22px, 3vw, 34px);
-      font-weight: 900;
-      letter-spacing:-.02em;
-    }
-    .kpi .l{ color:var(--muted); font-size:12px; }
-
-    .barWrap{ margin-top:12px; }
-    .bar{
-      width:100%; height:12px;
-      background: rgba(255,255,255,.10);
-      border: 1px solid var(--stroke);
-      border-radius: 999px;
-      overflow:hidden;
-    }
-    .bar > div{
-      height:100%;
-      width:0%;
-      background: linear-gradient(90deg, rgba(255,204,0,.95), rgba(255,46,166,.85), rgba(46,242,255,.85));
-      border-radius:999px;
-      transition: width .5s ease;
-    }
-    .barMeta{ margin-top:8px; display:flex; justify-content:space-between; color:var(--muted); font-size:12px; }
 
     .sectionTitle{
       display:flex; align-items:center; justify-content:space-between; gap:10px;
       margin: 0 0 10px;
     }
-    .sectionTitle h2{
-      margin:0;
-      font-size: 16px;
-      letter-spacing: .01em;
-    }
+    .sectionTitle h2{ margin:0; font-size: 16px; letter-spacing: .01em; }
     .tag{
       padding: 6px 10px;
       border-radius: 999px;
-      border:1px solid var(--stroke);
+      border:1px solid rgba(255,255,255,.14);
       background: rgba(0,0,0,.16);
-      color: var(--muted);
+      color: rgba(255,255,255,.74);
       font-size: 12px;
       white-space:nowrap;
     }
 
-    .list{ display:grid; gap:10px; }
-    .item{
-      border-radius: 16px;
-      border: 1px solid var(--stroke);
-      background: rgba(255,255,255,.06);
-      padding: 12px;
-      display:grid;
-      grid-template-columns: 1fr auto;
-      gap: 12px;
-      align-items:center;
+    .hero{
+      border-radius: 22px;
+      border: 1px solid rgba(255,204,0,.38);
+      background:
+        radial-gradient(1000px 360px at 18% 30%, rgba(255,204,0,.40), transparent 62%),
+        radial-gradient(900px 340px at 82% 70%, rgba(255,46,166,.22), transparent 62%),
+        radial-gradient(900px 340px at 55% 20%, rgba(46,242,255,.16), transparent 62%),
+        linear-gradient(90deg, rgba(255,204,0,.22), rgba(0,0,0,.12));
+      padding: clamp(16px, 3.6vw, 26px);
+      box-shadow: 0 0 70px rgba(255,204,0,.18), 0 0 160px rgba(255,46,166,.08);
+      text-transform: uppercase;
+      position: relative;
+      overflow:hidden;
+      margin-bottom: 14px;
     }
-    .item h3{ margin:0; font-size: 15px; }
-    .meta{ color: var(--muted); font-size: 12px; margin-top: 3px; line-height:1.35; }
-    .actions{ display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
+    .hero::after{
+      content:"";
+      position:absolute; inset:-45%;
+      background:
+        radial-gradient(closest-side, rgba(255,255,255,.25), transparent 65%),
+        radial-gradient(closest-side, rgba(255,204,0,.22), transparent 70%);
+      filter: blur(18px);
+      opacity:.62;
+      animation: heroShine 1.55s ease-in-out infinite;
+    }
+    @keyframes heroShine{
+      0%,100%{ transform: translate(-7%, -2%) rotate(0deg); opacity:.44; }
+      50%{ transform: translate(7%, 2%) rotate(10deg); opacity:.92; }
+    }
+
+    .heroText{
+      position: relative;
+      z-index: 1;
+      text-align:center;
+      font-weight: 1000;
+      letter-spacing: .06em;
+      text-shadow:
+        0 0 14px rgba(255,204,0,.40),
+        0 22px 90px rgba(0,0,0,.45);
+    }
+    .heroText .l1{
+      font-size: clamp(34px, 5.6vw, 76px);
+      line-height: 1.01;
+      color: rgba(255,234,160,.99);
+      animation: goldPulse 1.25s ease-in-out infinite;
+    }
+    .heroText .l2{
+      margin-top: 10px;
+      font-size: clamp(20px, 3.6vw, 50px);
+      line-height: 1.06;
+      color: rgba(255,214,110,.99);
+      animation: goldPulse 1.25s ease-in-out infinite;
+      animation-delay: .08s;
+    }
+    @keyframes goldPulse{
+      0%,100%{ filter: brightness(1.02) saturate(1.10); transform: translateY(0px); }
+      50%{ filter: brightness(1.22) saturate(1.30); transform: translateY(-1px); }
+    }
+    .heroEmoji{
+      margin-top: 12px;
+      position: relative;
+      z-index: 1;
+      text-align:center;
+      font-size: clamp(18px, 3.0vw, 28px);
+      letter-spacing: .18em;
+      opacity:.96;
+      text-shadow: 0 16px 60px rgba(0,0,0,.35);
+    }
+
+    /* Programação */
+    .daysGrid{
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 10px;
+    }
+    @media (max-width: 900px){ .daysGrid{ grid-template-columns: 1fr; } }
+
+    .dayCard{
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.12);
+      background:
+        radial-gradient(520px 220px at 18% 20%, rgba(255,46,166,.10), transparent 60%),
+        radial-gradient(520px 220px at 82% 70%, rgba(46,242,255,.09), transparent 60%),
+        linear-gradient(180deg, rgba(255,255,255,.085), rgba(255,255,255,.05));
+      padding: 12px;
+      box-shadow: 0 12px 52px rgba(0,0,0,.18);
+      transition: transform .18s ease, filter .18s ease;
+    }
+    .dayCard:hover{
+      transform: translateY(-2px);
+      filter: saturate(1.18);
+    }
+    .dayTop{
+      display:flex; justify-content:space-between; gap:10px; align-items:baseline;
+      margin-bottom: 8px;
+    }
+    .dayName{
+      font-weight: 1000;
+      letter-spacing: -.02em;
+      font-size: 14px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .dayDate{
+      color: rgba(255,255,255,.72);
+      font-size: 12px;
+      white-space: nowrap;
+      font-family: var(--mono);
+    }
+
+    .routeItem{
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.18);
+      padding: 10px;
+      display:grid;
+      gap: 6px;
+      margin-top: 8px;
+      position:relative;
+      overflow:hidden;
+    }
+    .routeItem::before{
+      content:"";
+      position:absolute; inset:-40%;
+      background:
+        radial-gradient(closest-side, rgba(255,204,0,.18), transparent 70%),
+        radial-gradient(closest-side, rgba(46,242,255,.12), transparent 70%),
+        radial-gradient(closest-side, rgba(255,46,166,.10), transparent 70%);
+      filter: blur(22px);
+      opacity:.55;
+      pointer-events:none;
+    }
+
+    .routeTitle{
+      position:relative;
+      display:flex;
+      gap: 8px;
+      align-items:baseline;
+      flex-wrap: wrap;
+      font-weight: 900;
+      letter-spacing: -.01em;
+      font-size: 13px;
+    }
+    .megaEmoji{
+      font-size: 18px;
+      line-height: 1;
+      filter: drop-shadow(0 14px 24px rgba(0,0,0,.30));
+    }
+    .badge{
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.18);
+      color: rgba(255,255,255,.80);
+      white-space: nowrap;
+      font-family: var(--mono);
+    }
+    .badge.festa{ border-color: rgba(255,46,166,.35); box-shadow: 0 0 22px rgba(255,46,166,.10); }
+    .badge.bloco{ border-color: rgba(46,242,255,.35); box-shadow: 0 0 22px rgba(46,242,255,.10); }
+
+    .routeMeta{
+      position:relative;
+      color: rgba(255,255,255,.74);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+    .routeBtns{
+      position:relative;
+      display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-start;
+      margin-top: 4px;
+    }
+
     .btn{
       cursor:pointer;
-      border:1px solid var(--stroke);
-      background: rgba(0,0,0,.20);
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.22);
       color: var(--text);
       padding: 9px 10px;
       border-radius: 12px;
@@ -159,257 +371,248 @@
       display:inline-flex;
       align-items:center;
       gap:6px;
+      white-space: nowrap;
     }
     .btn:hover{ transform: translateY(-1px); background: rgba(255,255,255,.10); }
     .btn:active{ transform: translateY(0px); }
 
-    a{ color: rgba(46,242,255,.95); text-decoration:none; }
-    a:hover{ text-decoration:underline; }
+    /* RSVP */
+    .rsvpBox{
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.14);
+      background:
+        radial-gradient(520px 220px at 20% 20%, rgba(255,204,0,.14), transparent 60%),
+        radial-gradient(520px 220px at 80% 70%, rgba(46,242,255,.10), transparent 60%),
+        rgba(0,0,0,.16);
+      padding: 12px;
+      box-shadow: 0 10px 44px rgba(0,0,0,.18);
+    }
+    .rsvpRow{
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
+      margin-top: 8px;
+    }
+    .inp{
+      flex: 1 1 220px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.24);
+      color: var(--text);
+      padding: 11px 12px;
+      outline: none;
+      font-size: 13px;
+    }
+    .inp::placeholder{ color: rgba(255,255,255,.55); }
 
-    .note{
-      margin-top:10px;
+    .rsvpOk{
+      margin-top: 8px;
+      color: rgba(53,255,122,.92);
       font-size: 12px;
-      color: var(--muted);
-      line-height:1.35;
+      display:none;
+    }
+    .rsvpErr{
+      margin-top: 8px;
+      color: rgba(255,110,140,.92);
+      font-size: 12px;
+      display:none;
     }
 
-    footer{
-      margin-top: 14px;
-      display:flex; flex-wrap:wrap; gap:10px;
-      justify-content:space-between; align-items:center;
-      color: var(--muted);
-      font-size: 12px;
+    /* Members */
+    .membersGrid{
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 10px;
     }
-    .miniBtns{ display:flex; gap:8px; flex-wrap:wrap; }
+    @media (max-width: 900px){ .membersGrid{ grid-template-columns: 1fr; } }
 
-    /* little rio flair */
-    .ribbon{
-      position:absolute; right:-60px; top:16px;
-      transform: rotate(18deg);
-      background: linear-gradient(90deg, rgba(255,204,0,.9), rgba(255,46,166,.85), rgba(46,242,255,.85));
-      padding:10px 74px;
+    .member{
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.14);
+      background:
+        radial-gradient(420px 180px at 20% 20%, rgba(255,204,0,.10), transparent 60%),
+        radial-gradient(420px 180px at 85% 80%, rgba(46,242,255,.08), transparent 60%),
+        rgba(0,0,0,.16);
+      padding: 12px;
+      display:flex;
+      justify-content:space-between;
+      gap: 12px;
+      align-items:center;
+      box-shadow: 0 10px 44px rgba(0,0,0,.18);
+    }
+    .mLeft{ display:flex; align-items:center; gap:10px; min-width: 0; }
+    .avatar{
+      width:38px; height:38px;
       border-radius: 999px;
-      font-weight:800;
-      letter-spacing:.04em;
-      font-size:12px;
-      color:#0b0a12;
-      box-shadow: 0 10px 30px rgba(0,0,0,.35);
-      opacity:.95;
+      border: 1px solid rgba(255,255,255,.18);
+      box-shadow: 0 10px 30px rgba(0,0,0,.22);
+      object-fit: cover;
+      flex: 0 0 auto;
+      background: radial-gradient(18px 18px at 30% 30%, rgba(255,255,255,.22), rgba(255,255,255,.06));
+    }
+    .mText{ min-width:0; }
+    .member .name{
+      font-weight: 1000;
+      letter-spacing: -.01em;
+      font-size: 13px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .member .ig{
+      color: rgba(46,242,255,.95);
+      font-size: 12px;
+      word-break: break-word;
+      opacity: .95;
+    }
+    .mTag{
+      font-size: 12px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.18);
+      color: rgba(255,255,255,.86);
+      white-space: nowrap;
+      font-family: var(--mono);
+    }
+
+    /* FX canvas */
+    #fx{
+      position:fixed; inset:0;
+      pointer-events:none;
+      z-index:10;
     }
   </style>
 </head>
 
 <body>
   <div class="aurora" aria-hidden="true"></div>
+  <div class="disco" aria-hidden="true"></div>
+  <div class="sparkles" aria-hidden="true"></div>
 
   <div class="wrap">
     <main class="card">
-      <div class="ribbon">RIO • BLOCO + FESTA</div>
 
       <header>
-        <div>
-          <h1>🐦🎭 Carnario 2026 — Rio</h1>
-          <div class="subtitle">
-            Contagem regressiva para <b>13/02/2026</b> (RJ) + agenda essencial: blocos confirmados e as <b>4 festas principais</b>.
-            <br/>
-            <b>Sem inventar:</b> cada item tem links de referência em “Fonte / Ingresso”.
-          </div>
-        </div>
-        <div class="pill" id="nowPill">⏱️ Atualizando…</div>
+        <h1>🐦🎭 Carnario 2026 — Rio</h1>
+        <div class="pill">🍻🍸🍹 MODO CARNARIO</div>
       </header>
 
-      <div class="grid">
-        <section class="panel">
-          <div class="sectionTitle">
-            <h2>⏳ Falta para 13/02/2026</h2>
-            <span class="tag">TZ: -03:00 (RJ/SP)</span>
-          </div>
+      <section class="hero" aria-label="Mensagem principal">
+        <div class="heroText">
+          <div class="l1">COMECOU O CARNARIO</div>
+          <div class="l2">VAI TODO MUNDO TOMA NO CU</div>
+        </div>
+        <div class="heroEmoji">🍺 🍻 🍷 🍸 🍹 🥃 🍾 🎊 🎉 🪩</div>
+      </section>
 
-          <div class="kpis">
-            <div class="kpi"><div class="n" id="weeks">—</div><div class="l">semanas</div></div>
-            <div class="kpi"><div class="n" id="days">—</div><div class="l">dias</div></div>
-            <div class="kpi"><div class="n" id="hours">—</div><div class="l">horas</div></div>
-            <div class="kpi"><div class="n" id="mins">—</div><div class="l">min</div></div>
-          </div>
-
-          <div class="barWrap">
-            <div class="bar" aria-label="Progresso até 13/02/2026">
-              <div id="barFill"></div>
-            </div>
-            <div class="barMeta">
-              <span id="progressLeft">—</span>
-              <span id="progressPct">—%</span>
-            </div>
-          </div>
-
-          <div class="note">
-            Dica: abre no celular e clica “📅 Add Calendar” nos eventos para montar seu roteiro.
-          </div>
-
-          <footer>
-            <span id="statusLine">Pronto.</span>
-            <div class="miniBtns">
-              <button class="btn" id="shareBtn">📤 Compartilhar</button>
-              <button class="btn" id="copyBtn">🔗 Copiar link</button>
-              <button class="btn" id="confettiBtn">🎊 Confete</button>
-            </div>
-          </footer>
-        </section>
-
-        <aside class="panel">
-          <div class="sectionTitle">
-            <h2>✅ Blocos confirmados (2026)</h2>
-            <span class="tag">com fonte</span>
-          </div>
-          <div class="list" id="confirmedBlocks"></div>
-
-          <div class="note">
-            Fonte principal dos blocos (agenda 2026): Diário do Rio.
-          </div>
-        </aside>
-      </div>
+      <section class="panel" id="programacao">
+        <div class="sectionTitle">
+          <h2>🗓️ Programação</h2>
+          <span class="tag">Sex → Seg</span>
+        </div>
+        <div class="daysGrid" id="daysGrid"></div>
+      </section>
 
       <section class="panel" style="margin-top:14px;">
         <div class="sectionTitle">
-          <h2>🎟️ Festas principais (2026)</h2>
-          <span class="tag">com links</span>
+          <h2>✅ Confirmar presença</h2>
+          <span class="tag">🍺 RSVP</span>
         </div>
 
-        <div class="list" id="mainParties"></div>
+        <div class="rsvpBox">
+          <div style="color:rgba(255,255,255,.84); font-size:13px;">
+            Confirma presença:
+          </div>
 
-        <div class="note">
-          Observação: quando duas fontes divergem em <b>horário</b>, eu mostro isso no card (sem chutar).
+          <div class="rsvpRow">
+            <select class="inp" id="rsvpEvent" style="flex: 1 1 260px;">
+              <option value="">Selecione o evento…</option>
+            </select>
+
+            <input class="inp" id="rsvpInsta" placeholder="Seu Instagram (ex: @fulano)" autocomplete="off" />
+
+            <button class="btn" id="rsvpBtn">🍾 Confirmar</button>
+          </div>
+
+          <div class="rsvpOk" id="rsvpOk">✅ Confirmado.</div>
+          <div class="rsvpErr" id="rsvpErr">❌ Preencha o evento e um @ válido.</div>
         </div>
       </section>
 
       <section class="panel" style="margin-top:14px;">
         <div class="sectionTitle">
-          <h2>📚 Fontes</h2>
-          <span class="tag">transparência</span>
+          <h2>📸 Instagrams</h2>
+          <span class="tag">🪩</span>
         </div>
-        <div class="note" id="sourcesBox"></div>
+        <div class="membersGrid" id="membersGrid"></div>
       </section>
 
     </main>
   </div>
 
-  <canvas id="fx" style="position:fixed;inset:0;pointer-events:none;z-index:10;"></canvas>
+  <canvas id="fx"></canvas>
 
   <script>
     // =========================================================
-    // CONFIG
+    // DATA
     // =========================================================
-    const TARGET = new Date("2026-02-13T00:00:00-03:00");
-    const START  = new Date("2025-01-01T00:00:00-03:00");
-
-    // Blocos confirmados (agenda 2026) — Diário do Rio.
-    // (mantive os 3 que já estavam confirmados no seu site)
-    const CONFIRMED_BLOCKS = [
-      {
-        kind:"Bloco",
-        title: "Areia",
-        dt: "2026-02-15T07:00:00-03:00",
-        whenLabel: "15/02/2026 (Dom) — 07:00",
-        where: "Posto 12, Leblon",
-        mapsQuery: "Posto 12 Leblon Rio de Janeiro",
-        ticketUrl: "https://diariodorio.com/agenda-dos-blocos-de-rua-do-rio-de-janeiro-em-2026/",
-        sourceUrl: "https://diariodorio.com/agenda-dos-blocos-de-rua-do-rio-de-janeiro-em-2026/"
-      },
-      {
-        kind:"Bloco",
-        title: "Sargento Pimenta",
-        dt: "2026-02-16T08:00:00-03:00",
-        whenLabel: "16/02/2026 (Seg) — 08:00",
-        where: "Av. Infante Dom Henrique, 75 (Flamengo)",
-        mapsQuery: "Avenida Infante Dom Henrique 75 Flamengo Rio de Janeiro",
-        ticketUrl: "https://diariodorio.com/agenda-dos-blocos-de-rua-do-rio-de-janeiro-em-2026/",
-        sourceUrl: "https://diariodorio.com/agenda-dos-blocos-de-rua-do-rio-de-janeiro-em-2026/"
-      },
-      {
-        kind:"Bloco",
-        title: "Império da Cruzada",
-        dt: "2026-02-16T14:00:00-03:00",
-        whenLabel: "16/02/2026 (Seg) — 14:00",
-        where: "Av. Delfim Moreira, 12 (Leblon)",
-        mapsQuery: "Avenida Delfim Moreira 12 Leblon Rio de Janeiro",
-        ticketUrl: "https://diariodorio.com/agenda-dos-blocos-de-rua-do-rio-de-janeiro-em-2026/",
-        sourceUrl: "https://diariodorio.com/agenda-dos-blocos-de-rua-do-rio-de-janeiro-em-2026/"
-      }
+    const MEMBERS = [
+      { name: "Rodrigo Getz",        ig: "rodrigogetz" },
+      { name: "Caio Dryzun",         ig: "caiodryzun" },
+      { name: "Arieh S Strul",       ig: "ariehsstrul_" },
+      { name: "André Lowenthal",     ig: "andrelowenthal" },
+      { name: "R. Gildin",           ig: "r_gildin" },
+      { name: "Rafa Blinder",        ig: "rafa_blinder" },
+      { name: "Marcio Sequerra",     ig: "marciosequerra" },
+      { name: "Michel Halperin",     ig: "michel_halperin" }
     ];
 
-    // FESTAS PRINCIPAIS (como você pediu)
-    // - Baile do Momo (Domingo)
-    // - SubaJovem (Segunda)
-    // - Monobloco (Sexta) -> aqui usei "Ensaios do Monobloco" (evento publicado) em 13/02/2026 (sexta)
-    // - Black Coffee BOMA (Sábado) -> 14/02/2026 no Museu do Amanhã, com divergência 21h vs 22h em páginas diferentes
-    const MAIN_PARTIES = [
-      {
-        kind:"Festa",
-        title: "Monobloco — Ensaios 2026 (sexta)",
-        dt: "2026-02-13T21:00:00-03:00",
-        whenLabel: "13/02/2026 (Sex) — horário a confirmar no ingresso",
-        where: "Fundição Progresso — R. dos Arcos, 24, Centro",
-        mapsQuery: "Fundição Progresso Rua dos Arcos 24 Rio de Janeiro",
-        ticketUrl: "https://ingresse.com/ensaios-do-monobloco-2026-fundicao-progresso/",
-        sourceUrl: "https://ingresse.com/ensaios-do-monobloco-2026-fundicao-progresso/",
-        note: "Este é um evento de ensaio (publicado). Não achei uma página aberta confirmando “desfile de rua” do Monobloco em 2026."
-      },
-      {
-        kind:"Festa",
-        title: "BOMA — Black Coffee (sábado)",
-        dt: "2026-02-14T21:00:00-03:00",
-        whenLabel: "14/02/2026 (Sáb) — 21:00 (ou 22:00, ver fontes)",
-        where: "Museu do Amanhã — Praça Mauá, 1, Centro",
-        mapsQuery: "Museu do Amanhã Praça Mauá 1 Rio de Janeiro",
-        ticketUrl: "https://ingresse.com/black-coffee-carnival/",
-        sourceUrl: "https://www.exiteventos.com.br/event-details/boma-presents-black-coffee-ahmed-spins",
-        extraSources: [
-          {label:"Fonte (21:00)", url:"https://www.exiteventos.com.br/event-details/boma-presents-black-coffee-ahmed-spins"},
-          {label:"Fonte (22:00)", url:"https://betimelapse.com.br/eventos/boma-black-coffee-rj/"}
-        ],
-        note: "Há divergência pública de horário (21h vs 22h). Confirme no ingresso antes de fechar seu roteiro."
-      },
-      {
-        kind:"Festa",
-        title: "Baile do Momo (domingo)",
-        dt: "2026-02-15T23:00:00-03:00",
-        whenLabel: "15/02/2026 (Dom) — 23:00 (local pode variar)",
-        where: "Rio de Janeiro — local a confirmar (depende da organização)",
-        mapsQuery: "Rio de Janeiro",
-        ticketUrl: "https://www.ingresse.com/bailedomomo-rj-carnaval/",
-        sourceUrl: "https://betimelapse.com.br/eventos/baile-do-momo-carnaval-rj/",
-        extraSources: [
-          {label:"Fonte (data)", url:"https://betimelapse.com.br/eventos/baile-do-momo-carnaval-rj/"},
-          {label:"Fonte (23:00)", url:"https://ondehoje.com.br/evento/baile-do-momo-15.02.2026"}
-        ],
-        note: "A data (domingo) está publicada; já vi listagem com 23:00, mas o local aparece como “a definir” em algumas páginas — confirme no ingresso."
-      },
-      {
-        kind:"Festa",
-        title: "SubaJovem — Baile da Purpurina (segunda)",
-        dt: "2026-02-16T18:00:00-03:00",
-        whenLabel: "16/02/2026 (Seg) — 18:00 (pode ter fim 06:00)",
-        where: "Rio de Janeiro — local a confirmar",
-        mapsQuery: "Rio de Janeiro",
-        ticketUrl: "https://www.ingresse.com/subajovem-baile-da-purpurina-open-bar-2026/",
-        sourceUrl: "https://www.ingresse.com/subajovem-baile-da-purpurina-open-bar-2026/",
-        extraSources: [
-          {label:"Fonte (Seg 16/02/2026)", url:"https://www.ingresse.com/subajovem-baile-da-purpurina-open-bar-2026/"},
-          {label:"Fonte (18:00–06:00 / local a definir)", url:"https://raentretenimento.com/eventos/ingressos-desconto-suba-jovem-carnaval-rj-2026/"}
-        ],
-        note: "A data (segunda) está na página do evento; vi página listando 18:00–06:00 e local 'a definir'. Confirme no ingresso."
-      }
+    const PROGRAMACAO = [
+      { kind:"Festa", title:"Monobloco — Ensaios 2026", dt:"2026-02-13T21:00:00-03:00",
+        whenLabel:"13/02/2026 (Sex)", where:"Fundição Progresso — R. dos Arcos, 24, Centro",
+        mapsQuery:"Fundição Progresso Rua dos Arcos 24 Rio de Janeiro",
+        linkUrl:"https://ingresse.com/ensaios-do-monobloco-2026-fundicao-progresso/" },
+
+      { kind:"Festa", title:"BOMA — Black Coffee", dt:"2026-02-14T21:00:00-03:00",
+        whenLabel:"14/02/2026 (Sáb)", where:"Museu do Amanhã — Praça Mauá, 1, Centro",
+        mapsQuery:"Museu do Amanhã Praça Mauá 1 Rio de Janeiro",
+        linkUrl:"https://ingresse.com/black-coffee-carnival/" },
+
+      { kind:"Bloco", title:"Areia", dt:"2026-02-15T07:00:00-03:00",
+        whenLabel:"15/02/2026 (Dom) — 07:00", where:"Posto 12, Leblon",
+        mapsQuery:"Posto 12 Leblon Rio de Janeiro",
+        linkUrl:"https://diariodorio.com/agenda-dos-blocos-de-rua-do-rio-de-janeiro-em-2026/" },
+
+      { kind:"Festa", title:"Baile do Momo", dt:"2026-02-15T23:00:00-03:00",
+        whenLabel:"15/02/2026 (Dom)", where:"Rio de Janeiro — local a confirmar",
+        mapsQuery:"Rio de Janeiro",
+        linkUrl:"https://www.ingresse.com/bailedomomo-rj-carnaval/" },
+
+      { kind:"Bloco", title:"Sargento Pimenta", dt:"2026-02-16T08:00:00-03:00",
+        whenLabel:"16/02/2026 (Seg) — 08:00", where:"Av. Infante Dom Henrique, 75 (Flamengo)",
+        mapsQuery:"Avenida Infante Dom Henrique 75 Flamengo Rio de Janeiro",
+        linkUrl:"https://diariodorio.com/agenda-dos-blocos-de-rua-do-rio-de-janeiro-em-2026/" },
+
+      { kind:"Bloco", title:"Império da Cruzada", dt:"2026-02-16T14:00:00-03:00",
+        whenLabel:"16/02/2026 (Seg) — 14:00", where:"Av. Delfim Moreira, 12 (Leblon)",
+        mapsQuery:"Avenida Delfim Moreira 12 Leblon Rio de Janeiro",
+        linkUrl:"https://diariodorio.com/agenda-dos-blocos-de-rua-do-rio-de-janeiro-em-2026/" },
+
+      { kind:"Festa", title:"SubaJovem — Baile da Purpurina (Open Bar)", dt:"2026-02-16T18:00:00-03:00",
+        whenLabel:"16/02/2026 (Seg)", where:"Rio de Janeiro — local a confirmar",
+        mapsQuery:"Rio de Janeiro",
+        linkUrl:"https://www.ingresse.com/subajovem-baile-da-purpurina-open-bar-2026/" }
     ];
 
     // =========================================================
-    // UI HELPERS
+    // HELPERS
     // =========================================================
     const $ = (id) => document.getElementById(id);
 
-    function fmtNow() {
-      const now = new Date();
-      const opts = { weekday:"short", year:"numeric", month:"2-digit", day:"2-digit", hour:"2-digit", minute:"2-digit", second:"2-digit" };
-      return now.toLocaleString("pt-BR", opts);
+    function escapeHtml(s){
+      return String(s).replace(/[&<>"']/g, c => ({
+        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+      }[c]));
     }
 
     function openMaps(query){
@@ -418,276 +621,397 @@
     }
 
     async function copyText(text){
-      try{
-        await navigator.clipboard.writeText(text);
-        setStatus("✅ Copiado.");
-      }catch{
-        setStatus("❌ Não consegui copiar (permissão do navegador).");
-      }
-    }
-
-    function setStatus(text){
-      $("statusLine").textContent = text;
-      clearTimeout(window.__st);
-      window.__st = setTimeout(()=> $("statusLine").textContent = "Pronto.", 2500);
-    }
-
-    function escapeHtml(s){
-      return String(s).replace(/[&<>"']/g, c => ({
-        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
-      }[c]));
+      try{ await navigator.clipboard.writeText(text); }catch{}
     }
 
     // =========================================================
-    // ICS GENERATOR
+    // PROGRAMACAO (por dia)
     // =========================================================
-    function pad2(n){ return String(n).padStart(2,"0"); }
-    function toICSDate(dt){
-      // Use local time as "floating" to avoid timezone bugs on some calendars
-      const d = new Date(dt);
+    function ymdFromDt(dtStr){
+      const d = new Date(dtStr);
+      if (isNaN(d.getTime())) return null;
       const y = d.getFullYear();
-      const m = pad2(d.getMonth()+1);
-      const da = pad2(d.getDate());
-      const h = pad2(d.getHours());
-      const mi = pad2(d.getMinutes());
-      const s = pad2(d.getSeconds());
-      return `${y}${m}${da}T${h}${mi}${s}`;
+      const m = String(d.getMonth()+1).padStart(2,"0");
+      const da = String(d.getDate()).padStart(2,"0");
+      return `${y}-${m}-${da}`;
     }
-    function downloadICS({title, start, location, url}){
-      if(!start){
-        setStatus("❌ Sem data/horário suficientes para .ics.");
-        return;
+
+    function dayLabelFromYMD(ymd){
+      const d = new Date(ymd + "T00:00:00-03:00");
+      const wd = d.toLocaleDateString("pt-BR", { weekday:"short" }).replace(".", "");
+      const pretty = d.toLocaleDateString("pt-BR");
+      return { wd, pretty };
+    }
+
+    function renderProgramacao(){
+      const all = PROGRAMACAO
+        .filter(e => e.dt && !isNaN(new Date(e.dt).getTime()))
+        .slice()
+        .sort((a,b)=> new Date(a.dt) - new Date(b.dt));
+
+      const groups = new Map();
+      for (const ev of all){
+        const key = ymdFromDt(ev.dt);
+        if (!key) continue;
+        if (!groups.has(key)) groups.set(key, []);
+        groups.get(key).push(ev);
       }
-      const dtStart = toICSDate(start);
-      const end = new Date(start.getTime() + 2*60*60*1000); // duração padrão 2h (sem inventar: é só default técnico)
-      const dtEnd = toICSDate(end);
 
-      const ics =
-`BEGIN:VCALENDAR
-VERSION:2.0
-PRODID:-//Carnario 2026//RJ Planner//PT-BR
-CALSCALE:GREGORIAN
-BEGIN:VEVENT
-UID:${Math.random().toString(16).slice(2)}@carnario
-DTSTAMP:${toICSDate(new Date())}
-DTSTART:${dtStart}
-DTEND:${dtEnd}
-SUMMARY:${title}
-LOCATION:${location || "Rio de Janeiro"}
-URL:${url || ""}
-END:VEVENT
-END:VCALENDAR`;
-
-      const blob = new Blob([ics], {type:"text/calendar;charset=utf-8"});
-      const a = document.createElement("a");
-      a.href = URL.createObjectURL(blob);
-      a.download = (title || "evento").replace(/[^\w\s-]/g,"").replace(/\s+/g,"-").toLowerCase() + ".ics";
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      setStatus("📅 .ics baixado!");
-    }
-
-    // =========================================================
-    // RENDER
-    // =========================================================
-    function renderList(rootId, items){
-      const root = $(rootId);
+      const keys = Array.from(groups.keys()).sort();
+      const root = $("daysGrid");
       root.innerHTML = "";
 
-      items
-        .slice()
-        .sort((a,b)=> (new Date(a.dt||"2100-01-01") - new Date(b.dt||"2100-01-01")))
-        .forEach((ev) => {
-          const div = document.createElement("div");
-          div.className = "item";
+      for (const key of keys){
+        const { wd, pretty } = dayLabelFromYMD(key);
 
-          const sourcesHtml = (() => {
-            const parts = [];
-            if (ev.sourceUrl) parts.push(`<a href="${ev.sourceUrl}" target="_blank" rel="noopener noreferrer">Fonte</a>`);
-            if (ev.extraSources?.length){
-              ev.extraSources.forEach(s => parts.push(`<a href="${s.url}" target="_blank" rel="noopener noreferrer">${escapeHtml(s.label)}</a>`));
-            }
-            return parts.length ? parts.join(" · ") : "";
-          })();
+        const dayIcon = (wd.toLowerCase().includes("sex") ? "🥂"
+                      : wd.toLowerCase().includes("sáb") ? "🪩"
+                      : wd.toLowerCase().includes("dom") ? "🍻"
+                      : "🥃");
 
-          div.innerHTML = `
-            <div>
-              <h3>${ev.kind === "Festa" ? "🎉" : "🎺"} ${escapeHtml(ev.title)}</h3>
-              <div class="meta">
-                <b>Quando:</b> ${escapeHtml(ev.whenLabel || "A confirmar")}<br/>
-                <b>Onde:</b> ${escapeHtml(ev.where || "A confirmar")}<br/>
-                ${sourcesHtml ? `<b>Links:</b> ${sourcesHtml}<br/>` : ""}
-                ${ev.note ? `<span style="opacity:.92"><b>Obs:</b> ${escapeHtml(ev.note)}</span>` : ""}
-              </div>
+        const card = document.createElement("div");
+        card.className = "dayCard";
+        card.innerHTML = `
+          <div class="dayTop">
+            <div class="dayName">${dayIcon} ${escapeHtml(wd.toUpperCase())}</div>
+            <div class="dayDate">${escapeHtml(pretty)}</div>
+          </div>
+          <div class="dayBody"></div>
+        `;
+        const body = card.querySelector(".dayBody");
+
+        groups.get(key).forEach(ev => {
+          const ri = document.createElement("div");
+          ri.className = "routeItem";
+
+          const isFesta = ev.kind === "Festa";
+          const icon = isFesta ? "🍾" : "🎺";
+          const badgeCls = isFesta ? "badge festa" : "badge bloco";
+          const badgeTxt = isFesta ? "FESTA" : "BLOCO";
+
+          ri.innerHTML = `
+            <div class="routeTitle">
+              <span class="megaEmoji">${icon}</span>
+              ${escapeHtml(ev.title)}
+              <span class="${badgeCls}">${badgeTxt}</span>
             </div>
-            <div class="actions">
+            <div class="routeMeta">
+              <b>Quando:</b> ${escapeHtml(ev.whenLabel || "")}<br/>
+              <b>Onde:</b> ${escapeHtml(ev.where || "")}
+            </div>
+            <div class="routeBtns">
               <button class="btn">🗺️ Maps</button>
-              <a class="btn" href="${ev.ticketUrl || ev.sourceUrl || "#"}" target="_blank" rel="noopener noreferrer">🎟️ Ingresso</a>
-              <button class="btn">📅 Add Calendar</button>
+              <a class="btn" href="${ev.linkUrl || "#"}" target="_blank" rel="noopener noreferrer">🎟️ Link</a>
               <button class="btn">📋 Copiar</button>
             </div>
           `;
 
-          const [mapsBtn, , icsBtn, copyBtn] = div.querySelectorAll(".actions .btn");
+          const btns = ri.querySelectorAll(".routeBtns .btn");
+          const mapsBtn = btns[0];
+          const copyBtn = btns[2];
 
           mapsBtn.onclick = () => openMaps(ev.mapsQuery || (ev.where + " Rio de Janeiro"));
-
-          icsBtn.onclick = () => {
-            const start = ev.dt ? new Date(ev.dt) : null;
-            if (!start || isNaN(start.getTime())) {
-              setStatus("❌ Sem data/horário suficientes para .ics.");
-              return;
-            }
-            downloadICS({
-              title: `${ev.kind}: ${ev.title}`,
-              start,
-              location: ev.where,
-              url: ev.ticketUrl || ev.sourceUrl
-            });
-          };
-
           copyBtn.onclick = () => copyText(
-            `${ev.kind}: ${ev.title}\nQuando: ${ev.whenLabel}\nOnde: ${ev.where}\nIngresso/Fonte: ${ev.ticketUrl || ev.sourceUrl || ""}`
+            `${ev.kind}: ${ev.title}\nQuando: ${ev.whenLabel}\nOnde: ${ev.where}\nLink: ${ev.linkUrl || ""}`
           );
 
-          root.appendChild(div);
+          body.appendChild(ri);
+        });
+
+        root.appendChild(card);
+      }
+    }
+
+    // =========================================================
+    // RSVP: por enquanto só confirma localmente (sem salvar fora)
+    // =========================================================
+    function normalizeInsta(input){
+      let s = String(input || "").trim();
+      s = s.replace(/\s+/g, "");
+      s = s.replace(/^https?:\/\/(www\.)?instagram\.com\//i, "");
+      s = s.replace(/\?.*$/, "");
+      s = s.replace(/\/+$/, "");
+      s = s.replace(/^@/, "");
+      return s;
+    }
+
+    function renderRSVPEvents(){
+      const sel = $("rsvpEvent");
+      sel.innerHTML = `<option value="">Selecione o evento…</option>`;
+
+      PROGRAMACAO
+        .slice()
+        .sort((a,b)=> new Date(a.dt) - new Date(b.dt))
+        .forEach((ev, idx) => {
+          const label = `${ev.whenLabel || ""} — ${ev.title}`;
+          const value = `${idx}|${ev.kind}|${ev.title}|${ev.dt}`;
+          const opt = document.createElement("option");
+          opt.value = value;
+          opt.textContent = label.trim();
+          sel.appendChild(opt);
         });
     }
 
-    function renderSources(){
-      const sources = [
-        {label:"SubaJovem (Ingresse)", url:"https://www.ingresse.com/subajovem-baile-da-purpurina-open-bar-2026/"},
-        {label:"SubaJovem (horário/local a definir — RA)", url:"https://raentretenimento.com/eventos/ingressos-desconto-suba-jovem-carnaval-rj-2026/"},
-        {label:"BOMA Black Coffee (Exit Eventos — 21:00)", url:"https://www.exiteventos.com.br/event-details/boma-presents-black-coffee-ahmed-spins"},
-        {label:"BOMA Black Coffee (Timelapse — 22:00 / Museu do Amanhã)", url:"https://betimelapse.com.br/eventos/boma-black-coffee-rj/"},
-        {label:"Baile do Momo (Timelapse — domingo 15/02)", url:"https://betimelapse.com.br/eventos/baile-do-momo-carnaval-rj/"},
-        {label:"Baile do Momo (OndeHoje — 23:00)", url:"https://ondehoje.com.br/evento/baile-do-momo-15.02.2026"},
-        {label:"Monobloco (Ensaios 2026 — Ingresse)", url:"https://ingresse.com/ensaios-do-monobloco-2026-fundicao-progresso/"},
-        {label:"Fundição Progresso (endereço)", url:"https://www.fundicaoprogresso.com.br/programacao/Show/118"},
-        {label:"Blocos RJ 2026 (Diário do Rio)", url:"https://diariodorio.com/agenda-dos-blocos-de-rua-do-rio-de-janeiro-em-2026/"}
-      ];
+    function submitRSVP(){
+      const ok = $("rsvpOk");
+      const err = $("rsvpErr");
+      ok.style.display = "none";
+      err.style.display = "none";
 
-      $("sourcesBox").innerHTML = sources.map(s =>
-        `• <a href="${s.url}" target="_blank" rel="noopener noreferrer">${escapeHtml(s.label)}</a>`
-      ).join("<br/>");
+      const evVal = $("rsvpEvent").value;
+      const ig = normalizeInsta($("rsvpInsta").value);
+
+      if (!evVal || !ig || ig.length < 2){
+        err.style.display = "block";
+        return;
+      }
+
+      // Não mostra @ em lugar nenhum
+      ok.style.display = "block";
+      $("rsvpInsta").value = "";
+      $("rsvpEvent").value = "";
+    }
+
+    document.getElementById("rsvpBtn").addEventListener("click", submitRSVP);
+    document.getElementById("rsvpInsta").addEventListener("keydown", (e)=>{
+      if (e.key === "Enter") submitRSVP();
+    });
+
+    // =========================================================
+    // MEMBERS
+    // =========================================================
+    function initialsFromName(name){
+      const parts = String(name || "").trim().split(/\s+/).filter(Boolean);
+      const a = parts[0]?.[0] || "C";
+      const b = parts.length > 1 ? parts[parts.length-1][0] : (parts[0]?.[1] || "A");
+      return (a + b).toUpperCase();
+    }
+
+    function makeFallbackDataUri(text){
+      const svg = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="72" height="72">
+          <defs>
+            <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+              <stop stop-color="#ffcc00" offset="0"/>
+              <stop stop-color="#ff2ea6" offset="0.48"/>
+              <stop stop-color="#2ef2ff" offset="1"/>
+            </linearGradient>
+          </defs>
+          <rect width="72" height="72" rx="36" fill="url(#g)"/>
+          <text x="50%" y="52%" text-anchor="middle" dominant-baseline="middle"
+            font-family="system-ui,Segoe UI,Arial" font-weight="900" font-size="22"
+            fill="rgba(10,8,32,.95)">${text}</text>
+        </svg>
+      `.trim();
+      return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
+    }
+
+    function renderMembers(){
+      const root = $("membersGrid");
+      root.innerHTML = "";
+
+      MEMBERS.forEach(m => {
+        const div = document.createElement("div");
+        div.className = "member";
+
+        const ig = String(m.ig || "").replace(/^@/, "");
+        const profileUrl = ig ? `https://instagram.com/${encodeURIComponent(ig)}` : "#";
+
+        const avatarUrl = ig ? `https://unavatar.io/instagram/${encodeURIComponent(ig)}` : "";
+        const fallback = makeFallbackDataUri(initialsFromName(m.name));
+
+        div.innerHTML = `
+          <div class="mLeft">
+            <img class="avatar" alt="Foto de ${escapeHtml(m.name)}" referrerpolicy="no-referrer"
+                 src="${avatarUrl}"
+                 onerror="this.onerror=null; this.src='${fallback}';" />
+            <div class="mText">
+              <div class="name">${escapeHtml(m.name || "Membro")}</div>
+              <div class="ig"><a href="${profileUrl}" target="_blank" rel="noopener noreferrer">@${escapeHtml(ig || "instagram")}</a></div>
+            </div>
+          </div>
+          <div class="mTag">🪩</div>
+        `;
+        root.appendChild(div);
+      });
     }
 
     // =========================================================
-    // COUNTDOWN
-    // =========================================================
-    function tick(){
-      const now = new Date();
-      $("nowPill").textContent = "⏱️ Agora: " + fmtNow();
-
-      let diff = TARGET - now;
-      if (diff < 0) diff = 0;
-
-      const totalSeconds = Math.floor(diff/1000);
-      const totalMinutes = Math.floor(totalSeconds/60);
-      const totalHours   = Math.floor(totalMinutes/60);
-      const totalDays    = Math.floor(totalHours/24);
-      const weeks = Math.floor(totalDays/7);
-      const days  = totalDays % 7;
-      const hours = totalHours % 24;
-      const mins  = totalMinutes % 60;
-
-      $("weeks").textContent = weeks;
-      $("days").textContent  = days;
-      $("hours").textContent = hours;
-      $("mins").textContent  = mins;
-
-      // progress bar
-      const span = TARGET - START;
-      const done = now - START;
-      const pct  = Math.max(0, Math.min(1, done / span));
-      $("barFill").style.width = (pct*100).toFixed(2) + "%";
-      $("progressPct").textContent = (pct*100).toFixed(1) + "%";
-
-      const daysLeftTotal = Math.ceil((TARGET - now)/(1000*60*60*24));
-      $("progressLeft").textContent = (daysLeftTotal > 0 ? `${daysLeftTotal} dias restantes` : "É HOJE!");
-    }
-
-    // =========================================================
-    // CONFETTI FX
+    // FX: explosão no load + depois suave (sem travar)
     // =========================================================
     const canvas = document.getElementById("fx");
-    const ctx = canvas.getContext("2d");
-    let particles = [];
+    const ctx = canvas.getContext("2d", { alpha: true });
+
     function resize(){
-      canvas.width = innerWidth * devicePixelRatio;
-      canvas.height = innerHeight * devicePixelRatio;
+      const dpr = 1;
+      canvas.width = Math.floor(innerWidth * dpr);
+      canvas.height = Math.floor(innerHeight * dpr);
       canvas.style.width = innerWidth + "px";
       canvas.style.height = innerHeight + "px";
-      ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
+      ctx.setTransform(dpr,0,0,dpr,0,0);
     }
     addEventListener("resize", resize);
     resize();
 
-    function popConfetti(){
-      const n = 170;
-      for (let i=0;i<n;i++){
-        particles.push({
-          x: Math.random()*innerWidth,
-          y: -10,
-          vx: (Math.random()-0.5)*2.4,
-          vy: 2.2 + Math.random()*3.3,
-          r: 2 + Math.random()*4.2,
-          rot: Math.random()*Math.PI*2,
-          vr: (Math.random()-0.5)*0.25,
-          life: 190 + Math.random()*140
-        });
-      }
-      setStatus("🎊 Confete!");
+    const FX = {
+      t0: performance.now(),
+      burstMs: 1100,
+      confetti: [],
+      droplets: [],
+      drinks: [],
+      maxConfetti: 240,
+      maxDroplets: 190,
+      maxDrinks: 52
+    };
+
+    const DRINKS = ["🍺","🍻","🍷","🍸","🍹","🥃","🍾"];
+    function rand(a,b){ return a + Math.random()*(b-a); }
+    function capArray(arr, max){
+      if (arr.length > max) arr.splice(0, arr.length - max);
     }
 
-    function animate(){
+    function spawnConfetti(n, intensity=1){
+      for (let i=0;i<n;i++){
+        FX.confetti.push({
+          x: rand(0, innerWidth),
+          y: rand(-60, innerHeight*0.22),
+          vx: rand(-2.6, 2.6)*intensity,
+          vy: rand(1.8, 5.2)*intensity,
+          r: rand(2.0, 5.4),
+          rot: rand(0, Math.PI*2),
+          vr: rand(-0.22, 0.22),
+          life: Math.floor(rand(120, 240)),
+        });
+      }
+      capArray(FX.confetti, FX.maxConfetti);
+    }
+
+    function spawnDroplets(n, intensity=1){
+      for (let i=0;i<n;i++){
+        FX.droplets.push({
+          x: rand(0, innerWidth),
+          y: rand(-260, -20),
+          vx: rand(-0.75, 0.75)*intensity,
+          vy: rand(3.4, 7.4)*intensity,
+          len: rand(12, 30),
+          w: rand(1.0, 2.4),
+          hue: rand(0, 360),
+          a: rand(0.28, 0.74),
+          life: Math.floor(rand(120, 240)),
+        });
+      }
+      capArray(FX.droplets, FX.maxDroplets);
+    }
+
+    function spawnDrinks(n, intensity=1){
+      for (let i=0;i<n;i++){
+        FX.drinks.push({
+          x: rand(0, innerWidth),
+          y: rand(-260, -20),
+          vx: rand(-0.55, 0.55)*intensity,
+          vy: rand(2.4, 6.0)*intensity,
+          rot: rand(-0.6, 0.6),
+          vr: rand(-0.03, 0.03),
+          s: rand(18, 30),
+          emoji: DRINKS[Math.floor(rand(0, DRINKS.length))],
+          life: Math.floor(rand(120, 240)),
+          a: rand(0.48, 0.92),
+        });
+      }
+      capArray(FX.drinks, FX.maxDrinks);
+    }
+
+    function burst(){
+      spawnConfetti(210, 1.2);
+      spawnDroplets(160, 1.2);
+      spawnDrinks(46, 1.15);
+    }
+    requestAnimationFrame(() => burst());
+
+    const FONT_STACK = "ui-sans-serif, system-ui, Apple Color Emoji, Segoe UI Emoji";
+    let lastFont = "";
+
+    function stepFX(){
+      const now = performance.now();
+      const elapsed = now - FX.t0;
+      const mellow = elapsed > FX.burstMs;
+
+      if (mellow){
+        if (Math.random() < 0.010) spawnConfetti(1, 0.55);
+        if (Math.random() < 0.012) spawnDroplets(1, 0.55);
+        if (Math.random() < 0.004) spawnDrinks(1, 0.55);
+      }
+
       ctx.clearRect(0,0,innerWidth,innerHeight);
-      particles = particles.filter(p => p.life-- > 0);
-      for (const p of particles){
+
+      FX.droplets = FX.droplets.filter(p => p.life-- > 0 && p.y < innerHeight + 260);
+      for (const p of FX.droplets){
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.012;
+        const alpha = (mellow ? 0.10 : 0.44) * p.a;
+
+        ctx.save();
+        ctx.globalAlpha = alpha;
+        ctx.strokeStyle = `hsla(${p.hue}, 95%, 60%, 1)`;
+        ctx.lineWidth = p.w;
+        ctx.lineCap = "round";
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y);
+        ctx.lineTo(p.x - p.vx*2, p.y - p.len);
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      FX.drinks = FX.drinks.filter(p => p.life-- > 0 && p.y < innerHeight + 260);
+      for (const p of FX.drinks){
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.010;
+        p.rot += p.vr;
+
+        const alpha = (mellow ? 0.08 : 0.34) * p.a;
+
+        const desired = `${p.s}px ${FONT_STACK}`;
+        if (desired !== lastFont){
+          ctx.font = desired;
+          lastFont = desired;
+        }
+
+        ctx.save();
+        ctx.globalAlpha = alpha;
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rot);
+        ctx.fillText(p.emoji, 0, 0);
+        ctx.restore();
+      }
+
+      FX.confetti = FX.confetti.filter(p => p.life-- > 0 && p.y < innerHeight + 220);
+      for (const p of FX.confetti){
         p.x += p.vx;
         p.y += p.vy;
         p.rot += p.vr;
-        p.vy += 0.012;
+        p.vy += 0.014;
+
+        const alpha = mellow ? 0.09 : 0.44;
+
         ctx.save();
-        ctx.translate(p.x,p.y);
+        ctx.globalAlpha = alpha;
+        ctx.translate(p.x, p.y);
         ctx.rotate(p.rot);
-        ctx.fillStyle = `hsla(${(p.life*3.2)%360}, 95%, 60%, .9)`;
-        ctx.fillRect(-p.r, -p.r, p.r*2.4, p.r*1.3);
+        ctx.fillStyle = `hsla(${(p.life*3.2)%360}, 95%, 60%, 1)`;
+        ctx.fillRect(-p.r, -p.r, p.r*2.6, p.r*1.25);
         ctx.restore();
       }
-      requestAnimationFrame(animate);
+
+      requestAnimationFrame(stepFX);
     }
-    animate();
 
-    // =========================================================
-    // SHARE / COPY
-    // =========================================================
-    document.getElementById("copyBtn").onclick = () => copyText(location.href);
-
-    document.getElementById("shareBtn").onclick = async () => {
-      if (navigator.share){
-        try{
-          await navigator.share({ title: document.title, text: "Carnario 2026 — RJ (blocos + festas)", url: location.href });
-          setStatus("📤 Compartilhado!");
-        }catch{
-          setStatus("❌ Share cancelado.");
-        }
-      } else {
-        copyText(location.href);
-        setStatus("Seu navegador não tem Share — copiei o link.");
-      }
-    };
-
-    document.getElementById("confettiBtn").onclick = popConfetti;
-
-    // init
-    renderList("confirmedBlocks", CONFIRMED_BLOCKS);
-    renderList("mainParties", MAIN_PARTIES);
-    renderSources();
-    tick();
-    setInterval(tick, 1000);
+    // INIT
+    renderProgramacao();
+    renderRSVPEvents();
+    renderMembers();
+    stepFX();
   </script>
 </body>
 </html>
-
